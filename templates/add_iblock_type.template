@@ -9,45 +9,47 @@ class __className__ extends BitrixMigration
 	 * Run the migration.
 	 *
 	 * @return mixed
+	 * @throws MigrationException
 	 */
 	public function up()
 	{
-		CModule::IncludeModule('iblock');
-		$cbt = new CIBlockType;
-		$cbtRes = $cbt->Add([
-			'ID'=>'__',
-			'SECTIONS'=>'Y',
-			'IN_RSS'=>'N',
-			'SORT'=>100,
-			'LANG'=>array(
-				'ru'=>array(
-					'NAME'=>'__',
-				)
-			)
-		]);
+		global $DB;
+		$arFields = [
+			'ID' => '__',
+			'SECTIONS' => 'Y',
+			'IN_RSS' => 'N',
+			'SORT' => 100,
+			'LANG' => [
+				'ru' => ['NAME' => '__'],
+				'en' => ['NAME' => '__']
+			]
+		];
 
-		if (!$cbtRes) {
-			throw new MigrationException('Ошибка при добавлении типа инфоблока '.$cbt->LAST_ERROR);
-		}
+		$iblockType = new CIBlockType;
+		$DB->StartTransaction();
+		$res = $iblockType->Add($arFields);
+
+		if($res) return $DB->Commit();
+
+		$DB->Rollback();
+		throw new MigrationException('Error: ' . $iblockType->LAST_ERROR);
 	}
 
 	/**
 	 * Reverse the migration.
 	 *
 	 * @return mixed
+	 * @throws MigrationException
 	 */
 	public function down()
 	{
-		CModule::IncludeModule('iblock');
-
 		global $DB;
 		$DB->StartTransaction();
-
-		if (!CIBlockType::Delete('__')) {
+		if(!CIBlockType::Delete('__'))
+		{
 			$DB->Rollback();
-			throw new MigrationException('Ошибка при удалении типа инфоблока __');
+			throw new MigrationException('Delete Error!');
 		}
-
-		$DB->Commit();
+		return $DB->Commit();
 	}
 }
