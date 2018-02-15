@@ -9,7 +9,7 @@ use Arrilot\BitrixMigrations\Commands\TemplatesCommand;
 use Arrilot\BitrixMigrations\Commands\StatusCommand;
 use Arrilot\BitrixMigrations\Migrator;
 use Arrilot\BitrixMigrations\Storages\BitrixDatabaseStorage;
-use goldencode\Bitrix\Migrations\CustomTemplatesCollection;
+use goldencode\Bitrix\Migrations\TemplatesCollection;
 use Symfony\Component\Console\Application;
 use Bitrix\Main\Loader;
 
@@ -26,7 +26,7 @@ $config = [
 ];
 
 $database = new BitrixDatabaseStorage($config['table']);
-$templates = new CustomTemplatesCollection();
+$templates = new TemplatesCollection();
 $templates->registerBasicTemplates();
 
 $migrator = new Migrator($config, $templates, $database);

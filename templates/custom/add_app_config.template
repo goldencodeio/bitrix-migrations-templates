@@ -1,0 +1,123 @@
+<?php
+
+use goldencode\Bitrix\Migrations\BitrixMigration;
+use Arrilot\BitrixMigrations\Exceptions\MigrationException;
+
+class __className__ extends BitrixMigration
+{
+	/**
+	 * Run the migration.
+	 *
+	 * @throws MigrationException
+	 */
+	public function up()
+	{
+		$iblockId = $this->addIblock([
+			'NAME' => '__',
+			'CODE' => '__',
+			'SITE_ID' => 's1',
+			'IBLOCK_TYPE_ID' => '__', //символьный код группы инфоблока,
+			'VERSION' => 2,
+			'GROUP_ID' => ['2' =>'R'],
+			'LIST_PAGE_URL' => '__',
+			'DETAIL_PAGE_URL' => '__',
+		]);
+
+		$props = [
+			[
+				'NAME' => 'Постфикс заголовка',
+				'SORT' => 500,
+				'CODE' => 'TITLE_POSTFIX',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			],
+			[
+				'NAME' => 'Разделитель заголовка',
+				'SORT' => 500,
+				'CODE' => 'TITLE_SEP',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			],
+			[
+				'NAME' => 'Конфиг Яндекс-Метрики (JSON)',
+				'SORT' => 500,
+				'CODE' => 'YA_METRIKA_CONF',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId,
+				'ROW_COUNT' => 10,
+				'COL_COUNT' => 50
+			],
+			[
+				'NAME' => 'Ссылка Вконтакте',
+				'SORT' => 500,
+				'CODE' => 'SOCIALS_VK',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			],
+			[
+				'NAME' => 'Ссылка Instagram',
+				'SORT' => 500,
+				'CODE' => 'SOCIALS_INSTAGRAM',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			],
+			[
+				'NAME' => 'Ссылка Facebook',
+				'SORT' => 500,
+				'CODE' => 'SOCIALS_FACEBOOK',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			],
+			[
+				'NAME' => 'Ссылка на политику конфендециальности',
+				'SORT' => 500,
+				'CODE' => 'PRIVACY_LINK',
+				'PROPERTY_TYPE' => 'S',
+				'LIST_TYPE' => 'L',
+				'VALUES' => [],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			]
+		];
+
+		foreach ($props as $i => $propFields) {
+			$propFields['SORT'] = 500 + $i * 10;
+			$this->addIblockElementProperty($propFields);
+		}
+	}
+
+	/**
+	 * Reverse the migration.
+	 *
+	 * @throws MigrationException
+	 */
+	public function down()
+	{
+		$this->deleteIblockByCode('__');
+	}
+}

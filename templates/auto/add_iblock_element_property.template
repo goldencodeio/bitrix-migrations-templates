@@ -1,6 +1,6 @@
 <?php
 
-use Arrilot\BitrixMigrations\BaseMigrations\BitrixMigration;
+use goldencode\Bitrix\Migrations\BitrixMigration;
 use Arrilot\BitrixMigrations\Exceptions\MigrationException;
 
 class __className__ extends BitrixMigration
@@ -13,14 +13,12 @@ class __className__ extends BitrixMigration
 	 */
 	public function up()
 	{
+		// TODO: Replace IBLOCK_ID in fields with this variable!
+		$iblockId = $this->getIblockIdByCode('__');
+
 		$fields = __fields__;
 
-		$ibp = new CIBlockProperty();
-		$propId = $ibp->add($fields);
-
-		if (!$propId) {
-			throw new MigrationException('Ошибка при добавлении свойства инфоблока '.$ibp->LAST_ERROR);
-		}
+		$this->addIblockElementProperty($fields);
 	}
 
 	/**
@@ -31,13 +29,7 @@ class __className__ extends BitrixMigration
 	 */
 	public function down()
 	{
-		$id = $this->getIblockPropIdByCode(__code__, __iblockId__);
-
-		$ibp = new CIBlockProperty();
-		$deleted = $ibp->delete($id);
-
-		if (!$deleted) {
-			throw new MigrationException('Ошибка при удалении свойства инфоблока '.$ibp->LAST_ERROR);
-		}
+		$iblockId = $this->getIblockIdByCode('__');
+		$this->deleteIblockElementPropertyByCode($iblockId, __code__);
 	}
 }

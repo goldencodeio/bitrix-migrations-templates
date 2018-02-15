@@ -1,6 +1,6 @@
 <?php
 
-use Arrilot\BitrixMigrations\BaseMigrations\BitrixMigration;
+use goldencode\Bitrix\Migrations\BitrixMigration;
 use Arrilot\BitrixMigrations\Exceptions\MigrationException;
 
 class __className__ extends BitrixMigration
@@ -13,15 +13,7 @@ class __className__ extends BitrixMigration
 	 */
 	public function up()
 	{
-		$id = $this->getIblockIdByCode(__code__);
-
-		$this->db->startTransaction();
-		if (!CIBlock::delete($id)) {
-			$this->db->rollbackTransaction();
-			throw new MigrationException('Ошибка при удалении инфоблока');
-		}
-
-		$this->db->commitTransaction();
+		$this->deleteIblockByCode(__code__);
 	}
 
 	/**

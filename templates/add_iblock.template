@@ -1,6 +1,6 @@
 <?php
 
-use Arrilot\BitrixMigrations\BaseMigrations\BitrixMigration;
+use goldencode\Bitrix\Migrations\BitrixMigration;
 use Arrilot\BitrixMigrations\Exceptions\MigrationException;
 
 class __className__ extends BitrixMigration
@@ -8,14 +8,11 @@ class __className__ extends BitrixMigration
 	/**
 	 * Run the migration.
 	 *
-	 * @return mixed
 	 * @throws MigrationException
 	 */
 	public function up()
 	{
-		$ib = new CIBlock;
-
-		$iblockId = $ib->add([
+		$iblockId = $this->addIblock([
 			'NAME' => '__',
 			'CODE' => '__',
 			'SITE_ID' => 's1',
@@ -26,30 +23,30 @@ class __className__ extends BitrixMigration
 			'DETAIL_PAGE_URL' => '__',
 		]);
 
-		if (!$iblockId) {
-			throw new MigrationException('Ошибка при добавлении инфоблока '.$ib->LAST_ERROR);
-		}
+		$props = [
+			[
+				'NAME' => '__',
+				'SORT' => 500,
+				'CODE' => '',
+				'PROPERTY_TYPE' => 'L', // Список
+				'LIST_TYPE' => 'C', // Тип списка - 'флажки'
+				'VALUES' => [
+					'VALUE' => 'да',
+				],
+				'MULTIPLE'  => 'N',
+				'IS_REQUIRED' => 'N',
+				'IBLOCK_ID' => $iblockId
+			]
+		];
 
-		// свойства
-		$propId = $this->addIblockElementProperty([
-			'NAME' => '__',
-			'SORT' => 500,
-			'CODE' => '',
-			'PROPERTY_TYPE' => 'L', // Список
-			'LIST_TYPE' => 'C', // Тип списка - 'флажки'
-			'VALUES' => [
-				'VALUE' => 'да',
-			],
-			'MULTIPLE'  => 'N',
-			'IS_REQUIRED' => 'N',
-			'IBLOCK_ID' => $iblockId
-		]);
+		foreach ($props as $propFields)
+			$this->addIblockElementProperty($propFields);
 	}
 
 	/**
 	 * Reverse the migration.
 	 *
-	 * @return mixed
+	 * @throws MigrationException
 	 */
 	public function down()
 	{

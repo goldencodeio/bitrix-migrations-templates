@@ -1,6 +1,6 @@
 <?php
 
-use Arrilot\BitrixMigrations\BaseMigrations\BitrixMigration;
+use goldencode\Bitrix\Migrations\BitrixMigration;
 use Arrilot\BitrixMigrations\Exceptions\MigrationException;
 use Bitrix\Highloadblock\HighloadBlockTable;
 
